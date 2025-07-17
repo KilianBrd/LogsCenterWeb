@@ -1,8 +1,19 @@
 <?php
 
 require_once __DIR__ . '/Controller/LoginController.php';
+require_once __DIR__ . '/Controller/DashboardController.php';
 
 use Src\Controller\LoginController;
+use Src\Controller\DashboardController;
 
-$controller = new LoginController();
-$controller->index();
+$routes = [
+    'dashboard' => [DashboardController::class, 'index'],
+    'login' => [LoginController::class, 'index'],
+];
+
+$page = $_GET['page'] ?? 'login';
+$route = $routes[$page] ?? $routes['login'];
+
+$controller = new $route[0]();
+$method = $route[1];
+$controller->$method();

@@ -2,19 +2,16 @@
 
 namespace Src\Controller;
 
-// Teste sans autoload d'abord
 require_once __DIR__ . '/../Model/Database.php';
 
 class LoginController {
     private $db;
 
     public function __construct() {
-        
         try {
             $this->db = new \Src\Model\Database();
         } catch (\Exception $e) {
-            echo "❌ Erreur de connexion à la base : " . $e->getMessage() . "<br>";
-            echo "=== FIN TEST DB (avec erreur) ===<br>";
+            $_SESSION['login_error'] = "Erreur de connexion à la base : " . $e->getMessage();
         }
     }
 
@@ -22,6 +19,22 @@ class LoginController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->handleLogin();
         }
+
+        $message = null;
+        $type = null;
+
+        if (isset($_SESSION['login_error'])) {
+            $message = $_SESSION['login_error'];
+            $type = 'error';
+            unset($_SESSION['login_error']);
+        }
+
+        if (isset($_SESSION['login_success'])) {
+            $message = $_SESSION['login_success'];
+            $type = 'success';
+            unset($_SESSION['login_success']);
+        }
+
         require __DIR__ . '/../View/login.php';
     }
 
@@ -34,16 +47,10 @@ class LoginController {
             return;
         }
 
-        echo 'passe';
-
         if ($this->authenticate($username, $password)) {
-
-            $_SESSION['user_id'] = $username;
-            $_SESSION['logged_in'] = true;
-
-            echo "<div style='color: green; background: #e8f5e9; padding: 10px; border-radius: 5px; margin: 10px 0;'>";
-            echo "✅ Connexion réussie ! Bienvenue, " . htmlspecialchars($username) . " !";
-            echo "</div>";
+            $_SESSION['login_success'] = "Connexion réussie !";
+            header('Location: index.php?page=dashboard');
+            exit;
         } else {
             $this->showError("Identifiants incorrects");
         }
@@ -53,18 +60,19 @@ class LoginController {
         if (!$this->db) {
             return false;
         }
-        
+
         $conn = $this->db->getConnection();
-        
+
         $stmt = $conn->prepare("SELECT id, username, password_hash FROM users WHERE email = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
-        
+
         $result = $stmt->get_result();
-        
+
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
-            if ($password == $user['password_hash']) {
+
+            if ($password === $user['password_hash']) {
                 return true;
             }
 
@@ -72,13 +80,11 @@ class LoginController {
                 return true;
             }
         }
-        
+
         return false;
     }
 
     private function showError($message) {
-        echo "<div style='color: red; background: #ffebee; padding: 10px; border-radius: 5px; margin: 10px 0;'>";
-        echo "❌ " . htmlspecialchars($message);
-        echo "</div>";
+        $_SESSION['login_error'] = $message;
     }
 }
