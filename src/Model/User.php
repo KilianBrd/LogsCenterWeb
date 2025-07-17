@@ -83,4 +83,18 @@ class User {
         }
         return null;
     }
+
+    public function getAllUsers () {
+        $db = new Database();
+        $conn = $db->getConnection();
+        $stmt = $conn->prepare('SELECT id, username, email, role, created_at FROM users');
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $users = [];
+        while ($row = $result->fetch_assoc()) {
+            $users[] = new User($row['id'], $row['username'], $row['email'], null, $row['role'], $row['created_at']);
+        }
+        return $users;
+    }
+    
 }
