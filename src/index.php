@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 require_once __DIR__ . '/Controller/LoginController.php';
 require_once __DIR__ . '/Controller/DashboardController.php';
@@ -12,6 +13,7 @@ $routes = [
     'login' => [LoginController::class, 'index'],
     'logout' => [LoginController::class, 'logout'],
     'create_user' => [\Src\Controller\UserController::class, 'createUser'],
+    'mon_compte' => [\Src\Controller\UserController::class, 'monCompte'],
 ];
 
 $page = $_GET['page'] ?? 'login';

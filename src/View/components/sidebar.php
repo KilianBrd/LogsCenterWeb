@@ -7,6 +7,7 @@ session_start();
     <h1 class="text-center text-2xl font-bold mb-8">LogsCenter</h1>
     <nav class="space-y-2 text-center">
       <a href="index.php?page=dashboard" class="block px-4 py-2 rounded hover:bg-gray-700">Voir les logs</a>
+      <a href="index.php?page=mon_compte" class="block px-4 py-2 rounded hover:bg-gray-700">Mon compte</a>
       <?php 
         if ($_SESSION['role'] === 'admin') {
            ?>

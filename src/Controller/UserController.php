@@ -42,4 +42,53 @@ class UserController {
         }
         require __DIR__ . '/../View/create_user.php';
     }
+
+    public function monCompte() {
+        if (!isset($_SESSION['email'])) {
+            header('Location: index.php?page=login');
+            exit;
+        }
+        $user = \Src\Model\User::findByEmail($_SESSION['email']);
+        $message = null;
+        $type = null;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $user) {
+            $username = $_POST['username'] ?? $user->getUsername();
+            $email = $_POST['email'] ?? $user->getEmail();
+            $password = $_POST['password'] ?? '';
+            $user->setUsername($username);
+            $user->setEmail($email);
+            if (!empty($password)) {
+                $user->setPassword($password);
+            }
+            if ($user->update()) {
+                $_SESSION['email'] = $email;
+                $message = 'Modifications enregistrées avec succès !';
+                $type = 'success';
+            } else {
+                $message = 'Erreur lors de la modification.';
+                $type = 'error';
+            }
+        }
+        require __DIR__ . '/../View/mon_compte.php';
+    }
+
+    public function supprimerCompte() {
+        session_start();
+        if (!isset($_SESSION['email'])) {
+            header('Location: index.php?page=login');
+            exit;
+        }
+        $user = \Src\Model\User::findByEmail($_SESSION['email']);
+        if ($user && $user->delete()) {
+            session_unset();
+            session_destroy();
+            header('Location: index.php?page=login');
+            exit;
+        } else {
+            $_SESSION['moncompte_message'] = "Erreur lors de la suppression du compte.";
+            $_SESSION['moncompte_type'] = 'error';
+            header('Location: index.php?page=mon_compte');
+            exit;
+        }
+    }
 } 

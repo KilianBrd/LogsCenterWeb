@@ -83,4 +83,27 @@ class User {
         }
         return null;
     }
+
+    public function update() {
+        $db = new Database();
+        $conn = $db->getConnection();
+        if (!empty($this->password)) {
+            $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
+            $stmt = $conn->prepare('UPDATE users SET username = ?, email = ?, password_hash = ? WHERE id = ?');
+            $stmt->bind_param('sssi', $this->username, $this->email, $password_hash, $this->id);
+        } else {
+            $stmt = $conn->prepare('UPDATE users SET username = ?, email = ? WHERE id = ?');
+            $stmt->bind_param('ssi', $this->username, $this->email, $this->id);
+        }
+        return $stmt->execute();
+    }
+
+    public function delete() {
+        if (!$this->id) return false;
+        $db = new Database();
+        $conn = $db->getConnection();
+        $stmt = $conn->prepare('DELETE FROM users WHERE id = ?');
+        $stmt->bind_param('i', $this->id);
+        return $stmt->execute();
+    }
 }
