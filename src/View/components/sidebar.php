@@ -8,7 +8,7 @@
   </div>
 
     <div class="text-center">
-    <a href="#" class="block px-4 py-2 mt-8 text-red-400 rounded hover:bg-gray-700 hover:text-red-300">
+    <a href="index.php?page=logout" class="block px-4 py-2 mt-8 text-red-400 rounded hover:bg-gray-700 hover:text-red-300">
       Déconnexion
     </a>
   </div>

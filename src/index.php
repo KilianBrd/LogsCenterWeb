@@ -9,6 +9,7 @@ use Src\Controller\DashboardController;
 $routes = [
     'dashboard' => [DashboardController::class, 'index'],
     'login' => [LoginController::class, 'index'],
+    'logout' => [LoginController::class, 'logout'],
 ];
 
 $page = $_GET['page'] ?? 'login';

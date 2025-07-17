@@ -79,13 +79,13 @@ class LoginController {
             
 
             if ($password === $user['password_hash']) {
-                $_SESSION['role'] = $result['role'];
+                $_SESSION['role'] = $user['role'];
                 return true;
                 
             }
 
             if (password_verify($password, $user['password_hash'])) {
-                $_SESSION['role'] = $result['role'];
+                $_SESSION['role'] = $user['role'];
                 return true;
             }
         }
@@ -95,5 +95,13 @@ class LoginController {
 
     private function showError($message) {
         $_SESSION['login_error'] = $message;
+    }
+
+    public function logout() {
+        session_start();
+        session_unset();
+        session_destroy();
+        header('Location: index.php?page=login');
+        exit;
     }
 }
