@@ -5,6 +5,8 @@ namespace Src\Model;
 class Database {
     private $conn;
 
+    //Connexion à la bdd
+
     public function __construct() {
         $this->loadEnv();
 
@@ -26,6 +28,8 @@ class Database {
     public function getConnection() {
         return $this->conn;
     }
+
+    //Load les variables du .env dans la var globale $_ENV
 
     private function loadEnv() {
         $envFile = __DIR__ . '/../../.env';

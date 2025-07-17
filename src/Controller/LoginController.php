@@ -7,6 +7,7 @@ require_once __DIR__ . '/../Model/Database.php';
 
 class LoginController {
     private $db;
+    public $results;
 
     public function __construct() {
         
@@ -34,11 +35,9 @@ class LoginController {
             return;
         }
 
-        echo 'passe';
-
         if ($this->authenticate($username, $password)) {
 
-            $_SESSION['user_id'] = $username;
+            $_SESSION['email'] = $username;
             $_SESSION['logged_in'] = true;
 
             echo "<div style='color: green; background: #e8f5e9; padding: 10px; border-radius: 5px; margin: 10px 0;'>";
@@ -65,10 +64,13 @@ class LoginController {
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
             if ($password == $user['password_hash']) {
+                $_SESSION['role'] = $result['role'];
                 return true;
+                
             }
 
             if (password_verify($password, $user['password_hash'])) {
+                $_SESSION['role'] = $result['role'];
                 return true;
             }
         }
