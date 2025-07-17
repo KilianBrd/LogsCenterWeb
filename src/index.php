@@ -14,6 +14,8 @@ $routes = [
     'logout' => [LoginController::class, 'logout'],
     'create_user' => [\Src\Controller\UserController::class, 'createUser'],
     'mon_compte' => [\Src\Controller\UserController::class, 'monCompte'],
+    'gestion_utilisateurs' => [\Src\Controller\UserController::class, 'gestionUtilisateurs'],
+    'supprimer_utilisateur' => [\Src\Controller\UserController::class, 'supprimerUtilisateur'],
 ];
 
 $page = $_GET['page'] ?? 'login';
