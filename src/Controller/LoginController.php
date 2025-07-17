@@ -11,6 +11,7 @@ class LoginController {
     public $results;
 
     public function __construct() {
+        session_start();
         try {
             $this->db = new \Src\Model\Database();
         } catch (\Exception $e) {
@@ -68,7 +69,7 @@ class LoginController {
 
         $conn = $this->db->getConnection();
 
-        $stmt = $conn->prepare("SELECT id, username, password_hash FROM users WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id, username, password_hash, role FROM users WHERE email = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
 
