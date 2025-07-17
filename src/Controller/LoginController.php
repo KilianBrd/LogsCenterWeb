@@ -2,6 +2,8 @@
 
 namespace Src\Controller;
 
+use User;
+
 require_once __DIR__ . '/../Model/Database.php';
 
 class LoginController {
@@ -50,12 +52,10 @@ class LoginController {
 
         if ($this->authenticate($username, $password)) {
             $_SESSION['login_success'] = "Connexion réussie !";
-            header('Location: index.php?page=dashboard');
-            exit;
-
             $_SESSION['email'] = $username;
             $_SESSION['logged_in'] = true;
-
+            header('Location: index.php?page=dashboard');
+            exit;
         } else {
             $this->showError("Identifiants incorrects");
         }
@@ -76,6 +76,7 @@ class LoginController {
 
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
+            
 
             if ($password === $user['password_hash']) {
                 $_SESSION['role'] = $result['role'];

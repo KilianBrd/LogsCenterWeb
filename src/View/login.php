@@ -10,7 +10,7 @@
   <div class="bg-gray-800 shadow-md rounded-3xl p-8 w-full max-w-md">
     <h2 class="text-xl font-semibold text-white mb-6 text-center">Connexion</h2>
 
-    <form method="POST" action="#">
+    <form method="POST" action="">
       <div class="mb-4">
         <label for="email" class="block text-white mb-1">Adresse email</label>
         <input type="email" id="email" name="email" required
