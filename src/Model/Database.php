@@ -6,10 +6,12 @@ class Database {
     private $conn;
 
     public function __construct() {
-        $servername = "127.0.0.1:3306";
-        $username = "root";
-        $password = "";
-        $dbname = "logscenter";
+        $this->loadEnv();
+
+        $servername = $_ENV['DBURL'] ?? '127.0.0.1:3306';
+        $username = $_ENV['DBUSERNAME'] ?? 'root';
+        $password = $_ENV['DBPASSWORD'] ?? '';
+        $dbname = $_ENV['DBNAME'] ?? '';
 
 
         $this->conn = new \mysqli($servername, $username, $password, $dbname);
@@ -23,5 +25,18 @@ class Database {
 
     public function getConnection() {
         return $this->conn;
+    }
+
+    private function loadEnv() {
+        $envFile = __DIR__ . '/../../.env';
+        if (file_exists($envFile)) {
+            $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            foreach ($lines as $line) {
+                if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
+                    list($key, $value) = explode('=', $line, 2);
+                    $_ENV[trim($key)] = trim($value);
+                }
+            }
+        }
     }
 }
