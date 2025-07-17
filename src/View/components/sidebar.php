@@ -12,12 +12,12 @@ $currentPage = $_GET['page'] ?? 'dashboard';
          Voir les logs
       </a>
 
-      <a href="index.php?page=mon_compte" class="block px-4 py-2 rounded hover:bg-gray-700">Mon compte</a>
+      <a href="index.php?page=mon_compte" class="block px-4 py-2 rounded hover:bg-gray-700 <?= ($currentPage === 'mon_compte') ? 'bg-gray-900 font-bold' : '' ?>">Mon compte</a>
       <?php if ($_SESSION['role'] === 'admin'): ?>
         <div class="mb-4">
-          <span class="inline-block bg-blue-700 text-black text-sm font-semibold px-3 py-1 rounded-full shadow">
+          <h2 class="inline-block text-white text-xl font-semibold px-3 py-1 rounded-full shadow underline">
             Administrateur
-          </span>
+          </h2>
         </div>
         <a href="index.php?page=create_user" 
            class="block px-4 py-2 rounded hover:bg-gray-700 <?= ($currentPage === 'create_user') ? 'bg-gray-900 font-bold' : '' ?>">
