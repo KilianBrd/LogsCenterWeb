@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/Controller/LoginController.php';
 require_once __DIR__ . '/Controller/DashboardController.php';
+require_once __DIR__ . '/Controller/UserController.php';
 
 use Src\Controller\LoginController;
 use Src\Controller\DashboardController;
@@ -10,6 +11,7 @@ $routes = [
     'dashboard' => [DashboardController::class, 'index'],
     'login' => [LoginController::class, 'index'],
     'logout' => [LoginController::class, 'logout'],
+    'create_user' => [\Src\Controller\UserController::class, 'createUser'],
 ];
 
 $page = $_GET['page'] ?? 'login';
