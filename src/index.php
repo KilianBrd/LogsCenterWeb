@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/Controller/LogController.php';
+require_once __DIR__ . '/Controller/LoginController.php';
 
-use Src\Controller\LogController;
+use Src\Controller\LoginController;
 
-$controller = new LogController();
+$controller = new LoginController();
 $controller->index();
