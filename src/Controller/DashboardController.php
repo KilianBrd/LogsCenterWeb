@@ -6,12 +6,9 @@ class DashboardController
 {
     public function index()
     {
-        $logs = [
-            ['message' => 'Log 1 : système démarré'],
-            ['message' => 'Log 2 : utilisateur connecté'],
-            ['message' => 'Log 3 : erreur critique détectée'],
-        ];
-
+        require_once __DIR__ . '/../Model/Log.php';
+        $logModel = new \Src\Model\Log(null, null, null, null, null, null, null, null, null);
+        $logs = $logModel->getAllLogs();
         require __DIR__ . '/../View/logs.php';
     }
 }

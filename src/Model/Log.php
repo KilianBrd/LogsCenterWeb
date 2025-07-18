@@ -55,10 +55,14 @@ class Log {
         return $this->eventTime;
     }
     public function getEventTimeFormatted () {
-        return date('d/m/Y H:i:s', $this->eventTime);
+        if (!$this->eventTime) return '-';
+        $dt = new \DateTime($this->eventTime);
+        return $dt->format('d/m/Y H:i:s');
     }
     public function getReceivedAtFormatted () {
-        return date('d/m/Y H:i:s', $this->receivedAt);
+        if (!$this->receivedAt) return '-';
+        $dt = new \DateTime($this->receivedAt);
+        return $dt->format('d/m/Y H:i:s');
     }
     public function setId ($id) {
         $this->id = $id;
@@ -97,7 +101,7 @@ class Log {
         $result = $stmt->get_result();
         $logs = [];
         while ($row = $result->fetch_assoc()) {
-            $logs[] = new Log($row['id'], $row['receivedAt'], $row['facility'], $row['priority'], $row['from_host'], $row['syslog_tag'], $row['message'], $row['severity'], $row['event_time']);
+            $logs[] = new Log($row['id'], $row['received_at'], $row['facility'], $row['priority'], $row['from_host'], $row['syslog_tag'], $row['message'], $row['severity'], $row['event_time']);
         }
         return $logs;
     }
