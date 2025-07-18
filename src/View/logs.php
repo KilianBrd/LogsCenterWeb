@@ -87,6 +87,31 @@
         </tbody>
       </table>
     </div>
+    <!-- Pagination -->
+    <div class="flex justify-center mt-6">
+      <?php
+        // Construction de l'URL de base en conservant les filtres
+        $query = $_GET;
+        unset($query['p']);
+        $baseUrl = 'index.php?page=dashboard';
+        if (!empty($query)) {
+          $baseUrl .= '&' . http_build_query($query);
+        }
+      ?>
+      <nav class="inline-flex rounded-md shadow-sm" aria-label="Pagination">
+        <?php if ($page > 1): ?>
+          <a href="<?= $baseUrl . '&p=' . ($page - 1) ?>" class="px-3 py-2 border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 rounded-l-md">&laquo; Précédent</a>
+        <?php else: ?>
+          <span class="px-3 py-2 border border-gray-200 bg-gray-100 text-gray-400 rounded-l-md cursor-not-allowed">&laquo; Précédent</span>
+        <?php endif; ?>
+        <span class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-700 font-semibold">Page <?= $page ?> / <?= $totalPages ?></span>
+        <?php if ($page < $totalPages): ?>
+          <a href="<?= $baseUrl . '&p=' . ($page + 1) ?>" class="px-3 py-2 border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 rounded-r-md">Suivant &raquo;</a>
+        <?php else: ?>
+          <span class="px-3 py-2 border border-gray-200 bg-gray-100 text-gray-400 rounded-r-md cursor-not-allowed">Suivant &raquo;</span>
+        <?php endif; ?>
+      </nav>
+    </div>
   </main>
 </div>
 

@@ -106,5 +106,26 @@ class Log {
         return $logs;
     }
 
+    public function getLogsPaginated($limit, $offset) {
+        $db = new Database();
+        $conn = $db->getConnection();
+        $stmt = $conn->prepare('SELECT * FROM systemevents ORDER BY received_at DESC LIMIT ? OFFSET ?');
+        $stmt->bind_param('ii', $limit, $offset);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $logs = [];
+        while ($row = $result->fetch_assoc()) {
+            $logs[] = new Log($row['id'], $row['received_at'], $row['facility'], $row['priority'], $row['from_host'], $row['syslog_tag'], $row['message'], $row['severity'], $row['event_time']);
+        }
+        return $logs;
+    }
+
+    public function countAllLogs() {
+        $db = new Database();
+        $conn = $db->getConnection();
+        $result = $conn->query('SELECT COUNT(*) as total FROM systemevents');
+        $row = $result->fetch_assoc();
+        return (int)$row['total'];
+    }
 
 }
