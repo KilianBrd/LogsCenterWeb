@@ -37,6 +37,15 @@
           <?php endforeach; ?>
         </select>
       </div>
+      <div>
+        <label for="filter_tag" class="block text-gray-700 text-sm font-semibold mb-1">Tag</label>
+        <select id="filter_tag" name="filter_tag" class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500">
+          <option value="">Tous</option>
+          <?php $tags = array_unique(array_map(fn($l) => $l->getSyslogTag(), $logs)); foreach ($tags as $tag): if (!$tag) continue; ?>
+            <option value="<?= htmlspecialchars($tag) ?>" <?= (($_GET['filter_tag'] ?? '') === $tag) ? 'selected' : '' ?>><?= htmlspecialchars($tag) ?></option>
+          <?php endforeach; ?>
+        </select>
+      </div>
       <button type="submit" class="bg-gray-700 text-white px-4 py-2 rounded font-semibold hover:bg-gray-800 transition">Filtrer</button>
       <a href="index.php?page=dashboard" class="ml-2 bg-gray-300 text-gray-800 px-4 py-2 rounded font-semibold hover:bg-gray-400 transition text-center">Réinitialiser</a>
     </form>
@@ -56,6 +65,11 @@
       if (!empty($_GET['filter_host'])) {
         $filteredLogs = array_filter($filteredLogs, function($log) {
           return $log->getFromHost() === $_GET['filter_host'];
+        });
+      }
+      if (!empty($_GET['filter_tag'])) {
+        $filteredLogs = array_filter($filteredLogs, function($log) {
+          return $log->getSyslogTag() === $_GET['filter_tag'];
         });
       }
     ?>
