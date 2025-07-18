@@ -91,4 +91,40 @@ class UserController {
             exit;
         }
     }
+
+    public function gestionUtilisateurs() {
+        session_start();
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            header('Location: index.php?page=login');
+            exit;
+        }
+        $userModel = new \Src\Model\User();
+        $users = $userModel->getAllUsers();
+        $message = $_SESSION['gestion_user_message'] ?? null;
+        $type = $_SESSION['gestion_user_type'] ?? null;
+        unset($_SESSION['gestion_user_message'], $_SESSION['gestion_user_type']);
+        require __DIR__ . '/../View/gestion_utilisateurs.php';
+    }
+
+    public function supprimerUtilisateur() {
+        session_start();
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            header('Location: index.php?page=login');
+            exit;
+        }
+        $id = $_POST['id'] ?? null;
+        if ($id) {
+            $user = new \Src\Model\User();
+            $user->setId($id);
+            if ($user->delete()) {
+                $_SESSION['gestion_user_message'] = 'Utilisateur supprimé avec succès !';
+                $_SESSION['gestion_user_type'] = 'success';
+            } else {
+                $_SESSION['gestion_user_message'] = 'Erreur lors de la suppression.';
+                $_SESSION['gestion_user_type'] = 'error';
+            }
+        }
+        header('Location: index.php?page=gestion_utilisateurs');
+        exit;
+    }
 } 

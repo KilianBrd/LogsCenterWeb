@@ -23,6 +23,10 @@ $currentPage = $_GET['page'] ?? 'dashboard';
            class="block px-4 py-2 rounded hover:bg-gray-700 <?= ($currentPage === 'create_user') ? 'bg-gray-900 font-bold' : '' ?>">
            Créer un utilisateur
         </a>
+        <a href="index.php?page=gestion_utilisateurs" 
+           class="block px-4 py-2 rounded hover:bg-gray-700 <?= ($currentPage === 'gestion_utilisateurs') ? 'bg-gray-900 font-bold' : '' ?>">
+           Gestion des utilisateurs
+        </a>
       <?php endif; ?>
     </nav>
   </div>
